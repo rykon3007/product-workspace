@@ -1,6 +1,5 @@
 import Image from "next/image";
-import AccountForm from "@/components/forms/AccountForm";
-import LoginForm from "@/components/forms/LoginForm";
+import AccountForm from "@/components/templates/AccountForm";
 
 export default function Home() {
   return (
@@ -53,7 +52,6 @@ export default function Home() {
           </a>
         </div>
         <AccountForm />
-        <LoginForm />
       </main>
       <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
         <a

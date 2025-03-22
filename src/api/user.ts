@@ -1,17 +1,12 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { AppDataSource } from '@/infrastructure/data-source';
+import { getRepository } from 'typeorm';
 import { User } from '@/domain/entities/User';
+import { AppDataSource } from '@/infrastructure/data-source';
 
-AppDataSource.initialize()
-  .then(() => {
-    console.log('Data Source has been initialized!');
-  })
-  .catch((err) => {
-    console.error('Error during Data Source initialization:', err);
-  });
+AppDataSource.initialize().catch((error) => console.log(error));
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  const userRepository = AppDataSource.getRepository(User);
+const handler = async (req: NextApiRequest, res: NextApiResponse) => {
+  const userRepository = getRepository(User);
 
   switch (req.method) {
     case 'GET':
@@ -19,7 +14,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         const users = await userRepository.find();
         res.status(200).json(users);
       } catch (error) {
-        res.status(500).json({ message: 'Error fetching users', error });
+        res.status(500).json({ message: 'Error fetching users' });
       }
       break;
 
@@ -29,42 +24,43 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         const savedUser = await userRepository.save(newUser);
         res.status(201).json(savedUser);
       } catch (error) {
-        res.status(500).json({ message: 'Error saving user', error });
+        res.status(500).json({ message: 'Error creating user' });
       }
       break;
 
     case 'PUT':
       try {
-        const userToUpdate = await userRepository.findOneBy({ id: req.body.id });
-        if (!userToUpdate) {
+        const user = await userRepository.findOne(req.body.id);
+        if (user) {
+          userRepository.merge(user, req.body);
+          const updatedUser = await userRepository.save(user);
+          res.status(200).json(updatedUser);
+        } else {
           res.status(404).json({ message: 'User not found' });
-          break;
         }
-        userRepository.merge(userToUpdate, req.body);
-        const updatedUser = await userRepository.save(userToUpdate);
-        res.status(200).json(updatedUser);
       } catch (error) {
-        res.status(500).json({ message: 'Error updating user', error });
+        res.status(500).json({ message: 'Error updating user' });
       }
       break;
 
     case 'DELETE':
       try {
-        const userToDelete = await userRepository.findOneBy({ id: req.body.id });
-        if (!userToDelete) {
+        const user = await userRepository.findOne(req.body.id);
+        if (user) {
+          await userRepository.remove(user);
+          res.status(200).json({ message: 'User deleted' });
+        } else {
           res.status(404).json({ message: 'User not found' });
-          break;
         }
-        await userRepository.remove(userToDelete);
-        res.status(204).end();
       } catch (error) {
-        res.status(500).json({ message: 'Error deleting user', error });
+        res.status(500).json({ message: 'Error deleting user' });
       }
       break;
 
     default:
       res.setHeader('Allow', ['GET', 'POST', 'PUT', 'DELETE']);
       res.status(405).end(`Method ${req.method} Not Allowed`);
-      break;
   }
-}
+};
+
+export default handler;

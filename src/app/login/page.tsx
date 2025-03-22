@@ -1,12 +1,9 @@
-import LoginForm from '@/components/forms/LoginForm';
+import LoginForm from '@/components/templates/LoginForm';
 
-const Login = () => {
+export default function Login() {
   return (
-    <div className="login-container">
-      <h1>Login</h1>
+    <div className="flex items-center justify-center min-h-screen">
       <LoginForm />
     </div>
   );
-};
-
-export default Login;
+}

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Input } from 'shadcn/ui';
 
-const AccountForm = ({ onSubmit }) => {
+const AccountForm = () => {
   const [githubPat, setGithubPat] = useState('');
   const [openaiKey, setOpenaiKey] = useState('');
   const [claudeKey, setClaudeKey] = useState('');
@@ -9,7 +9,7 @@ const AccountForm = ({ onSubmit }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSubmit({ githubPat, openaiKey, claudeKey, localLLMUrl });
+    // Add logic to handle form submission
   };
 
   return (

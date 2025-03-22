@@ -30,12 +30,14 @@ const useAccount = () => {
     }
   };
 
-  const updateAccount = async (account) => {
+  const updateAccount = async (id, updatedAccount) => {
     setLoading(true);
     try {
-      const response = await axios.put('/api/user', account);
+      const response = await axios.put(`/api/user/${id}`, updatedAccount);
       setAccounts(
-        accounts.map((acc) => (acc.id === account.id ? response.data : acc))
+        accounts.map((account) =>
+          account.id === id ? response.data : account
+        )
       );
     } catch (err) {
       setError(err);
@@ -47,8 +49,8 @@ const useAccount = () => {
   const deleteAccount = async (id) => {
     setLoading(true);
     try {
-      await axios.delete('/api/user', { data: { id } });
-      setAccounts(accounts.filter((acc) => acc.id !== id));
+      await axios.delete(`/api/user/${id}`);
+      setAccounts(accounts.filter((account) => account.id !== id));
     } catch (err) {
       setError(err);
     } finally {
