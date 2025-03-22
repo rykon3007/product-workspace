@@ -12,13 +12,12 @@ GitHub Copilot Workspaceのような、GitHubリポジトリ全体の内容を�
 
 ## ⚙️ 技術スタック
 
-- **フロントエンド:** Next.js (App Router、TypeScript、完全CSR)、Tailwind CSS
+- **フロントエンド:** Next.js (App Router、TypeScript、完全CSR)、Tailwind CSS、shadcn/ui
 - **バックエンド:** Next.js API Routes、SQLite、TypeORM
 - **LLMプロバイダ:** OpenAI、Claude、ローカルLLM（LM Studioなど）
 - **UI設計:** Material Designを採用
 - **コンポーネント管理:** Storybook（Atomic Design方式）
 - **システム設計:** クリーンアーキテクチャを採用（後述）
-
 ---
 
 ## 📂 システム構造（クリーンアーキテクチャ準拠）
@@ -42,10 +41,12 @@ Tauri移行時にはAPI Routesとバックエンド専用ロジックを独立�
 ## 🔐 アカウント・プロジェクト管理要件
 
 ### 🔸 アカウント情報（ユーザー単位）
+
 - GitHub PAT、OpenAI APIキー、Claude APIキー、ローカルLLM URLをセキュアに暗号化し保存。
 - UI上で編集可能。
 
 ### 🔸 プロジェクト管理（プロジェクト単位）
+
 - 複数プロジェクト作成可能。
 - 各プロジェクトにGitHubリポジトリURLまたはローカルパスを設定。
 - プロジェクトはアカウント情報を参照。
@@ -55,20 +56,24 @@ Tauri移行時にはAPI Routesとバックエンド専用ロジックを独立�
 ## 💬 チャットルーム・ドラフト管理要件
 
 ### 🔹 チャットルームの作成・管理
+
 - 複数チャットルーム作成可能。
 - チャットルーム作成時に明確な目的を指定（Issue作成、アイデアのブレスト）。
 - チャットルームは一覧表示で管理し、いつでも再開・削除可能。
 
 ### 🔹 チャット内LLMプロバイダの動的選択
+
 - 各メッセージごとに使用LLMを動的に選択可能。
 - アカウント登録のLLM接続情報を元にAPIリクエスト。
 
 ### 🔹 チャット文脈保持
+
 - チャット履歴を文脈として保持し、各リクエストは履歴を考慮。
 
 ---
 
 ## 📝 ドラフト作成・更新要件
+
 - Issue作成チャットではLLMと対話してドラフトを生成・更新。
 - 常時表示パネルで確認・編集可能。
 - LLM提案の差分更新が可能。
@@ -76,6 +81,7 @@ Tauri移行時にはAPI Routesとバックエンド専用ロジックを独立�
 ---
 
 ## 📮 GitHub Issue投稿要件
+
 - ドラフトを明示的なボタン操作でGitHubに投稿。
 - 投稿後のIssue管理はGitHubに委ね、アプリ内には保持しない。
 
@@ -103,6 +109,7 @@ OS、ブラウザ、バージョンなど
 ---
 
 ## 🎨 UI要件（Material Design準拠）
+
 - サイドバー: プロジェクト選択、チャットルーム一覧管理
 - メイン: チャットUI（動的LLM選択）
 - 右側パネル: 常時表示ドラフト管理パネル、Issue投稿ボタン
@@ -110,18 +117,17 @@ OS、ブラウザ、バージョンなど
 ---
 
 ## 📦 コンポーネント管理（Storybook・Atomic Design）
+
 - Material Design準拠のUIをStorybook上で管理。
 - Atom→Molecule→Organismでコンポーネントを整理。
+- UI構築にはshadcn/uiを積極的に活用。
 
 ---
 
 ## ⚠️ スコープ明確化（最終指示）
+
 - 本アプリの責務はリポジトリ文脈を踏まえたIssueドラフト作成と投稿まで。
 - 投稿後のIssue管理はGitHub側。
 - フロントは完全CSRで、API経由のデータ取得。
 - API・インフラ層の移行は将来的なTauri移行を考慮。
 - GitHub・LLM通信等のAPIクライアント処理はフロント側に保持。
-
-
-Copyright © 2025 Ryota Kondo form Seedias ltd.
-All Rights Reserved.
