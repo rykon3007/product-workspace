@@ -4,6 +4,7 @@ import * as React from "react"
 import { Slot } from "@radix-ui/react-slot"
 import { VariantProps, cva } from "class-variance-authority"
 import { PanelLeftIcon } from "lucide-react"
+import { useRouter } from 'next/router' // Import useRouter
 
 import { useIsMobile } from "@/hooks/use-mobile"
 import { cn } from "@/lib/utils"
@@ -698,6 +699,20 @@ function SidebarMenuSubButton({
   )
 }
 
+function AccountSettingsButton() {
+  const router = useRouter();
+
+  const handleClick = () => {
+    router.push('/account');
+  };
+
+  return (
+    <Button onClick={handleClick}>
+      Account Settings
+    </Button>
+  );
+}
+
 export {
   Sidebar,
   SidebarContent,
@@ -723,4 +738,5 @@ export {
   SidebarSeparator,
   SidebarTrigger,
   useSidebar,
+  AccountSettingsButton, // Export the new button
 }
