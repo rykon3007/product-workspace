@@ -10,7 +10,7 @@ export default function Home() {
     const isAuthenticated = false; // Replace with actual authentication check
 
     if (!isAuthenticated) {
-      router.push("/login");
+      router.push("/signin");
     }
   }, [router]);
 
