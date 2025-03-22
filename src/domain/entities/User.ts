@@ -16,4 +16,10 @@ export class User {
 
   @Column()
   localLLMUrl!: string;
+
+  @Column()
+  username!: string;
+
+  @Column()
+  password!: string;
 }
