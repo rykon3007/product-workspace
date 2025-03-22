@@ -1,4 +1,3 @@
-// src/domain/entities/User.ts
 import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
 
 @Entity()
