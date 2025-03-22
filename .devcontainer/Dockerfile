@@ -1,5 +1,5 @@
 # Base image
-FROM mcr.microsoft.com/vscode/devcontainers/javascript-node:0-14
+FROM mcr.microsoft.com/vscode/devcontainers/javascript-node:0-20
 
 # Install additional dependencies
 RUN apt-get update && apt-get install -y \
